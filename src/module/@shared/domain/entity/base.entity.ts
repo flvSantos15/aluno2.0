@@ -15,7 +15,7 @@ export default class BaseEntity {
     return this._id
   }
 
-  get createAt(): Date {
+  get createdAt(): Date {
     return this._createdAt
   }
 
