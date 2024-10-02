@@ -1,7 +1,7 @@
 import { ProductGateway } from '../../gateway/product.gateway'
 import { FindProductInputDto, FindProductOutputDto } from './find-product.dto'
 
-export default class FindProductsUsecase {
+export default class FindProductUsecase {
   constructor(private productRepository: ProductGateway) {
     this.productRepository = productRepository
   }
