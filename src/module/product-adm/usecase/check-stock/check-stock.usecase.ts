@@ -12,7 +12,7 @@ export default class CheckStockUsecase {
     const product = await this._productRepository.find(input.productId)
 
     return {
-      productId: product.id.id,
+      productId: input.productId,
       stock: product.stock
     }
   }
