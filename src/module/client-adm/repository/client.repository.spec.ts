@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import { ClientModel } from './client.model'
-import ClientReporitory from './client.repository'
+import ClientRepository from './client.repository'
 import { Client } from '../domain/client.entity'
 import Id from '../../@shared/domain/value-object/id.value-object'
 
@@ -31,7 +31,7 @@ describe('ClientRepository teste', () => {
       address: 'Address 1'
     })
 
-    const reporitory = new ClientReporitory()
+    const reporitory = new ClientRepository()
     await reporitory.add(client)
 
     const clientDb = await ClientModel.findOne({ where: { id: '1' } })
@@ -51,7 +51,7 @@ describe('ClientRepository teste', () => {
       updatedAt: new Date()
     })
 
-    const reporitory = new ClientReporitory()
+    const reporitory = new ClientRepository()
     const result = await reporitory.find('1')
 
     expect(result.id.id).toEqual('1')

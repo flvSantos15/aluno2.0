@@ -12,6 +12,7 @@ export class AddClientUsecase {
 
   async execute(input: AddClientInputDto): Promise<AddClientOututDto> {
     const props = {
+      id: new Id(input.id) || new Id(),
       name: input.name,
       email: input.email,
       address: input.address
