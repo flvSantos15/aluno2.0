@@ -27,15 +27,6 @@ export default class ClientAdmFacade implements ClientAdmFacadeInterface {
   async find(
     input: FindClientFacadeInputDto
   ): Promise<FindClientFacadeOutputDto> {
-    const client = await this._findUsecase.execute(input)
-
-    return {
-      id: client.id,
-      name: client.name,
-      email: client.email,
-      address: client.address,
-      createdAt: client.createdAt,
-      updatedAt: client.updatedAt
-    }
+    return await this._findUsecase.execute(input)
   }
 }

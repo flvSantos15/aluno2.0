@@ -3,6 +3,8 @@ import { ClientModel } from '../repository/client.model'
 import ClientRepository from '../repository/client.repository'
 import { AddClientUsecase } from '../usecase/add-client/add-client.usecase'
 import ClientAdmFacade from './client-adm.facade'
+import FindClientUsecase from '../usecase/find-client/find-client.usecase'
+import ClientAdmFacadeFactory from '../factory/client-adm.facade.factory'
 
 describe('ClientAdmFacade test', () => {
   let sequelize: Sequelize
@@ -41,6 +43,32 @@ describe('ClientAdmFacade test', () => {
     await facace.add(input)
 
     const client = await ClientModel.findOne({ where: { id: '1' } })
+
+    expect(client).toBeDefined()
+    expect(client.name).toBe(input.name)
+  })
+
+  it('should find a client', async () => {
+    // const repository = new ClientRepository()
+    // const findUsecase = new FindClientUsecase(repository)
+    // const addUsecase = new AddClientUsecase(repository)
+    // const facace = new ClientAdmFacade({
+    //   addUsecase: addUsecase,
+    //   findUsecase: findUsecase
+    // })
+
+    const facade = ClientAdmFacadeFactory.create()
+
+    const input = {
+      id: '1',
+      name: 'Client 1',
+      email: 'x@email.com',
+      address: 'Address 1'
+    }
+
+    await facade.add(input)
+
+    const client = await facade.find({ id: '1' })
 
     expect(client).toBeDefined()
     expect(client.name).toBe(input.name)
