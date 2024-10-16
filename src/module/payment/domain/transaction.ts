@@ -6,9 +6,9 @@ type TransactionProps = {
   id?: Id
   amount: number
   orderId: string
-  status: string
-  createdAt: Date
-  updatedAt: Date
+  status?: string
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export default class Transaction extends BaseEntity implements AggregateRoot {
