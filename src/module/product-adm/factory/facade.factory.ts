@@ -6,8 +6,10 @@ import CheckStockUsecase from '../usecase/check-stock/check-stock.usecase'
 export default class ProductAdmFacadeFactory {
   static create() {
     const productRepository = new ProductRepository()
+
     const addProductUseCase = new AddProductUseCase(productRepository)
     const checkStockUseCase = new CheckStockUsecase(productRepository)
+
     const productFacade = new ProductAdmFacade({
       addUsecase: addProductUseCase,
       stockUsecase: checkStockUseCase

@@ -28,13 +28,15 @@ describe('ClientRepository teste', () => {
       id: new Id('1'),
       name: 'Client 1',
       email: 'x@.com',
-      address: 'Address 1'
+      document: '1234-5678'
     })
 
     const reporitory = new ClientRepository()
     await reporitory.add(client)
 
-    const clientDb = await ClientModel.findOne({ where: { id: '1' } })
+    const { dataValues: clientDb } = await ClientModel.findOne({
+      where: { id: '1' }
+    })
 
     expect(clientDb.id).toEqual('1')
     expect(clientDb.name).toEqual(client.name)
@@ -42,11 +44,11 @@ describe('ClientRepository teste', () => {
   })
 
   it('should find a client', async () => {
-    const client = await ClientModel.create({
+    const { dataValues: client } = await ClientModel.create({
       id: '1',
       name: 'Client 1',
       email: 'x@.com',
-      address: 'Address 1',
+      document: '1234-5678',
       createdAt: new Date(),
       updatedAt: new Date()
     })

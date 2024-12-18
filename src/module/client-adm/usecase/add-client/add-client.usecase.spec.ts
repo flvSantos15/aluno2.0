@@ -15,7 +15,7 @@ describe('Add Client Usecase test', () => {
     const input = {
       name: 'Client 1',
       email: 'client1@example.com',
-      address: 'Address 1'
+      document: '1234-5678'
     }
 
     const result = await usecase.execute(input)

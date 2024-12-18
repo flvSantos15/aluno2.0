@@ -6,8 +6,10 @@ import FindClientUsecase from '../usecase/find-client/find-client.usecase'
 export default class ClientAdmFacadeFactory {
   static create() {
     const repository = new ClientRepository()
+
     const findUsecase = new FindClientUsecase(repository)
     const addUsecase = new AddClientUsecase(repository)
+
     const facace = new ClientAdmFacade({
       addUsecase: addUsecase,
       findUsecase: findUsecase

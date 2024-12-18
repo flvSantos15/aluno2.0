@@ -1,12 +1,12 @@
 import { StoreCatalogFacade } from '../facade/store-catalog.facade'
-import { IStoreCatalogFacade } from '../facade/store-catalog.facade.interface'
 import ProductRepository from '../repository/product.repository'
 import FindAllProductsUsecase from '../usecase/find-all-products/find-all-products.usecase'
 import FindProductUsecase from '../usecase/find-product/find-product.usecase'
 
 export default class StoreCatalogFacadeFactory {
-  static create(): IStoreCatalogFacade {
+  static create(): StoreCatalogFacade {
     const productRepository = new ProductRepository()
+
     const findUsecase = new FindProductUsecase(productRepository)
     const findAllUsecase = new FindAllProductsUsecase(productRepository)
 

@@ -35,22 +35,24 @@ describe('Product repository test', () => {
     const productRepository = new ProductRepository()
     await productRepository.add(product)
 
-    const productDb = await ProductModel.findOne({
+    const { dataValues: result } = await ProductModel.findOne({
       where: { id: '1' }
     })
 
-    expect(productProps.id.id).toEqual('1')
-    expect(productProps.name).toEqual('Product 1')
-    expect(productProps.description).toEqual('product 1 description')
-    expect(productProps.purchasePrice).toEqual(100)
-    expect(productProps.stock).toEqual(10)
+    expect(result.id.id).toEqual('1')
+    expect(result.name).toEqual('Product 1')
+    expect(result.description).toEqual('product 1 description')
+    expect(result.purchasePrice).toEqual(100)
+    expect(result.stock).toEqual(10)
   })
 
   it('should find a product', async () => {
     const productRepository = new ProductRepository()
 
-    ProductModel.create({
-      id: new Id('1'),
+    const id = new Id('1')
+
+    await ProductModel.create({
+      id: id.id,
       name: 'Product 1',
       description: 'product 1 description',
       purchasePrice: 100,

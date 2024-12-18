@@ -7,7 +7,7 @@ export default class ProductRepository implements ProductGateway {
   async findAll(): Promise<Product[]> {
     const products = await ProductModel.findAll()
 
-    return products.map((product) => {
+    return products.map(({ dataValues: product }) => {
       return new Product({
         id: new Id(product.id),
         name: product.name,
@@ -18,7 +18,9 @@ export default class ProductRepository implements ProductGateway {
   }
 
   async find(id: string): Promise<Product> {
-    const product = await ProductModel.findOne({ where: { id } })
+    const { dataValues: product } = await ProductModel.findOne({
+      where: { id }
+    })
 
     return new Product({
       id: new Id(product.id),

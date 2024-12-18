@@ -6,7 +6,7 @@ const client = new Client({
   id: new Id('1'),
   name: 'Client 1',
   email: 'client1@example.com',
-  address: 'Address 1'
+  document: '1234-5678'
 })
 
 const MockRepository = () => {

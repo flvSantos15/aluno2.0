@@ -3,8 +3,8 @@ import { ClientModel } from '../repository/client.model'
 import ClientRepository from '../repository/client.repository'
 import { AddClientUsecase } from '../usecase/add-client/add-client.usecase'
 import ClientAdmFacade from './client-adm.facade'
-import FindClientUsecase from '../usecase/find-client/find-client.usecase'
 import ClientAdmFacadeFactory from '../factory/client-adm.facade.factory'
+import Address from '../../@shared/domain/value-object/address'
 
 describe('ClientAdmFacade test', () => {
   let sequelize: Sequelize
@@ -37,12 +37,22 @@ describe('ClientAdmFacade test', () => {
       id: '1',
       name: 'Client 1',
       email: 'x@email.com',
-      address: 'Address 1'
+      document: '1234-5678',
+      address: new Address(
+        'Street 123',
+        '99',
+        'Casa 123',
+        'Sao paulo',
+        'SP',
+        '99999-000'
+      )
     }
 
     await facace.add(input)
 
-    const client = await ClientModel.findOne({ where: { id: '1' } })
+    const { dataValues: client } = await ClientModel.findOne({
+      where: { id: '1' }
+    })
 
     expect(client).toBeDefined()
     expect(client.name).toBe(input.name)
@@ -63,7 +73,15 @@ describe('ClientAdmFacade test', () => {
       id: '1',
       name: 'Client 1',
       email: 'x@email.com',
-      address: 'Address 1'
+      document: '1234-5678',
+      address: new Address(
+        'Street 123',
+        '99',
+        'Casa 123',
+        'Sao paulo',
+        'SP',
+        '99999-000'
+      )
     }
 
     await facade.add(input)
@@ -71,6 +89,7 @@ describe('ClientAdmFacade test', () => {
     const client = await facade.find({ id: '1' })
 
     expect(client).toBeDefined()
+    expect(client.id).toBe(input.id)
     expect(client.name).toBe(input.name)
   })
 })

@@ -5,7 +5,8 @@ import ProcessPaymentUseCase from './process-payment.usecase'
 const transcation = new Transaction({
   id: new Id('1'),
   amount: 100,
-  orderId: '1'
+  orderId: '1',
+  status: 'approved'
 })
 
 const MockRepository = () => {
@@ -15,7 +16,7 @@ const MockRepository = () => {
 }
 
 const transcation2 = new Transaction({
-  id: new Id('2'),
+  id: new Id('1'),
   amount: 50,
   orderId: '1',
   status: 'declined'
@@ -23,7 +24,7 @@ const transcation2 = new Transaction({
 
 const MockRepositoryDecline = () => {
   return {
-    save: jest.fn().mockReturnValue(Promise.resolve(transcation))
+    save: jest.fn().mockReturnValue(Promise.resolve(transcation2))
   }
 }
 
@@ -33,8 +34,7 @@ describe('Process payment usecase unit test', () => {
     const usecase = new ProcessPaymentUseCase(repository)
     const input = {
       orderId: '1',
-      amount: 100,
-      status: 'approved'
+      amount: 100
     }
 
     const result = await usecase.execute(input)

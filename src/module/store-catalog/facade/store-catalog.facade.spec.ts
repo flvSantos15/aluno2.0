@@ -37,7 +37,7 @@ describe('StoreCatalogFacade test', () => {
     expect(result.name).toBe('Product 1')
   })
 
-  it('should find a product', async () => {
+  it('should find all products', async () => {
     const facade = StoreCatalogFacadeFactory.create()
 
     await ProductModel.create({

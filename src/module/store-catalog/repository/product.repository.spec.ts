@@ -1,7 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import ProductModel from './product.model'
 import ProductRepository from './product.repository'
-import Id from '../../@shared/domain/value-object/id.value-object'
 
 describe('ProductRepository test', () => {
   let sequelize: Sequelize
@@ -22,19 +21,16 @@ describe('ProductRepository test', () => {
     await sequelize.close()
   })
 
-  const id1 = new Id('1')
-  const id2 = new Id('2')
-
   it('should find all products', async () => {
     await ProductModel.create({
-      id: id1.id,
+      id: '1',
       name: 'Product 1',
       description: 'Description 1',
       salesPrice: 100
     })
 
     await ProductModel.create({
-      id: id2.id,
+      id: '2',
       name: 'Product 2',
       description: 'Description 2',
       salesPrice: 200
