@@ -6,7 +6,7 @@ export interface GenerateInvoiceFacadeInputDto {
   complement: string
   city: string
   state: string
-  zipCode: string
+  zipcode: string
   items: {
     id: string
     name: string
@@ -28,7 +28,7 @@ export interface InvoiceFacadeOutputDto {
     complement: string
     city: string
     state: string
-    zipCode: string
+    zipcode: string
   }
   items: {
     id: string

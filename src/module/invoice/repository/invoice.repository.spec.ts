@@ -98,32 +98,27 @@ describe('Invoice repository test', () => {
       updatedAt: new Date()
     })
 
-    await InvoiceModel.create(
-      {
-        id: invoice.id.id,
-        name: invoice.name,
-        document: invoice.document,
-        items: [invoice.items],
-        street: invoice.address.street,
-        number: invoice.address.number,
-        complement: invoice.address.complement,
-        city: invoice.address.city,
-        state: invoice.address.state,
-        zipcode: invoice.address.zipcode,
-        createdAt: invoice.createdAt,
-        updatedAt: invoice.updatedAt
-      },
-      {
-        include: [{ model: InvoiceItemModel }]
-      }
-    )
+    await InvoiceModel.create({
+      id: invoice.id.id,
+      name: invoice.name,
+      document: invoice.document,
+      items: [invoice.items],
+      street: invoice.address.street,
+      number: invoice.address.number,
+      complement: invoice.address.complement,
+      city: invoice.address.city,
+      state: invoice.address.state,
+      zipcode: invoice.address.zipcode,
+      createdAt: invoice.createdAt,
+      updatedAt: invoice.updatedAt
+    })
 
-    // await InvoiceItemModel.create({
-    //   id: item1.id.id,
-    //   name: item1.name,
-    //   price: item1.price,
-    //   invoice_id: invoice.id.id
-    // })
+    await InvoiceItemModel.create({
+      id: item1.id.id,
+      name: item1.name,
+      price: item1.price,
+      invoice_id: invoice.id.id
+    })
 
     const result = await repository.find('2')
 

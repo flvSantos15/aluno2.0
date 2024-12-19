@@ -3,11 +3,11 @@ import InvoiceModel from '../repository/invoice.model'
 import InvoiceItemModel from '../repository/invoice-items.model'
 import InvoiceRepository from '../repository/invoice.repository'
 import GenerateInvoiceUseCase from '../usecase/generate/generate-invoice.usecase'
+import FindInvoiceUseCase from '../usecase/find-invoice/find-invoice.usecase'
 import InvoiceFacade from './invoice.facade'
 import Address from '../../@shared/domain/value-object/address'
 import Id from '../../@shared/domain/value-object/id.value-object'
-import InvoiceItems from '../domain/invoice-items.entity'
-// import ProductAdmFacadeFactory from '../factory/facade.factory'
+import InvoiceFacadeFactory from '../factory/facade.factory'
 
 describe('InvoiceFacade test', () => {
   let sequelize: Sequelize
@@ -29,16 +29,15 @@ describe('InvoiceFacade test', () => {
   })
 
   it('should create a invoice', async () => {
-    // TODO: The problem should be here
-    const repository = new InvoiceRepository()
-    // TODO: Esses dois debaixo foram testados e estao ok
-    const useCase = new GenerateInvoiceUseCase(repository)
-    const facade = new InvoiceFacade({
-      generate: useCase,
-      find: undefined
-    })
+    // const repository = new InvoiceRepository()
 
-    // const productFacade = ProductAdmFacadeFactory.create()
+    // const useCase = new GenerateInvoiceUseCase(repository)
+    // const facade = new InvoiceFacade({
+    //   generate: useCase,
+    //   find: undefined
+    // })
+
+    const facade = InvoiceFacadeFactory.create()
 
     const address = new Address(
       'Street 1',
@@ -52,7 +51,7 @@ describe('InvoiceFacade test', () => {
     const id = new Id('1')
 
     const invoiceItem = {
-      id: id.id,
+      id: '1',
       name: 'Item 1 - teste do map',
       price: 100
     }
@@ -67,21 +66,17 @@ describe('InvoiceFacade test', () => {
       complement: address.complement,
       city: address.city,
       state: address.state,
-      zipCode: address.zipcode
+      zipcode: address.zipcode
     }
 
     await facade.generate(input)
 
-    // TODO: Item was not created
     const { dataValues: invoice } = await InvoiceModel.findOne({
       where: { id: '1' },
       include: {
         model: InvoiceItemModel
       }
     })
-
-    // TODO Em algum lugar o item n ta sendo criado
-    console.log('invoice', invoice)
 
     expect(invoice).toBeDefined()
     expect(invoice.id).toBe(input.id)
@@ -91,22 +86,63 @@ describe('InvoiceFacade test', () => {
     expect(invoice.street).toBe(input.street)
   })
 
-  // it('should check product stock', async () => {
-  //   const productFacade = ProductAdmFacadeFactory.create()
+  it('should find a invoice', async () => {
+    const repository = new InvoiceRepository()
 
-  //   const input = {
-  //     id: '1',
-  //     name: 'Product 1',
-  //     description: 'Product 1 description',
-  //     purchasePrice: 10,
-  //     stock: 10
-  //   }
+    const generateUseCase = new GenerateInvoiceUseCase(repository)
+    const useCase = new FindInvoiceUseCase(repository)
+    const facade = new InvoiceFacade({
+      generate: generateUseCase,
+      find: useCase
+    })
 
-  //   await productFacade.addProduct(input)
+    // const facade = InvoiceFacadeFactory.create()
 
-  //   const result = await productFacade.checkStock({ productId: '1' })
+    const address = new Address(
+      'Street 1',
+      '123',
+      'Complemento',
+      'City 1',
+      'state 1',
+      'zipcode 1'
+    )
 
-  //   expect(result.productId).toBe(input.id)
-  //   expect(result.stock).toBe(input.stock)
-  // })
+    const id = new Id('1')
+
+    const invoiceItem = {
+      id: '2',
+      name: 'Item 2 - teste do find invoice',
+      price: 100
+    }
+
+    const invoiceData = {
+      id: '2',
+      name: 'Invoice 2',
+      document: '12345678',
+      items: [invoiceItem],
+      street: address.street,
+      number: address.number,
+      complement: address.complement,
+      city: address.city,
+      state: address.state,
+      zipcode: address.zipcode
+    }
+
+    await facade.generate(invoiceData)
+
+    const input = {
+      id: '2'
+    }
+
+    await facade.find(input)
+
+    const invoice = await facade.find({ id: '2' })
+
+    expect(invoice).toBeDefined()
+    expect(invoice.id).toBe(input.id)
+    expect(invoice.name).toBe('Invoice 2')
+    expect(invoice.items[0].name).toBe('Item 2 - teste do find invoice')
+    expect(invoice.document).toBe('12345678')
+    expect(invoice.address.street).toBe('Street 1')
+  })
 })

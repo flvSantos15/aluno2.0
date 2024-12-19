@@ -31,16 +31,6 @@ export default class InvoiceRepository implements InvoiceGateway {
         include: [{ model: InvoiceItemModel }]
       }
     )
-
-    // TODO: maybe is not working here
-    invoice.items.map(async (item) => {
-      await InvoiceItemModel.create({
-        id: item.id.id,
-        name: item.name,
-        price: item.price,
-        invoice_id: invoice.id.id
-      })
-    })
   }
 
   async find(id: string): Promise<Invoice> {

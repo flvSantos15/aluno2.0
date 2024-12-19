@@ -7,7 +7,7 @@ export interface GenerateInvoiceUseCaseInputDto {
   complement: string
   city: string
   state: string
-  zipCode: string
+  zipcode: string
   items: {
     id: string
     name: string
@@ -24,7 +24,7 @@ export interface GenerateInvoiceUseCaseOutputDto {
   complement: string
   city: string
   state: string
-  zipCode: string
+  zipcode: string
   items: {
     id: string
     name: string

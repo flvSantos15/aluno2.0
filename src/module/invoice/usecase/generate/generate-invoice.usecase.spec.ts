@@ -21,7 +21,7 @@ describe('Generate Invoice usecase unit test', () => {
       complement: 'Complemento',
       city: 'City 1',
       state: 'state 1',
-      zipCode: 'zipcode 1',
+      zipcode: 'zipcode 1',
       items: [
         {
           id: '1',
