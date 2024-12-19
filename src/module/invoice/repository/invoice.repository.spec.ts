@@ -10,7 +10,7 @@ import InvoiceItemModel from './invoice-items.model'
 describe('Invoice repository test', () => {
   let sequelize: Sequelize
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     sequelize = new Sequelize({
       dialect: 'sqlite',
       storage: ':memory:',
@@ -18,11 +18,11 @@ describe('Invoice repository test', () => {
       sync: { force: false }
     })
 
-    await sequelize.addModels([InvoiceModel, InvoiceItemModel])
+    await sequelize.addModels([InvoiceItemModel, InvoiceModel])
     await sequelize.sync()
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
     await sequelize.close()
   })
 
@@ -44,30 +44,34 @@ describe('Invoice repository test', () => {
 
     const invoiceProps = {
       id: new Id('1'),
-      name: 'Product 1',
+      name: 'Invoice 1',
       document: '12345678',
       address: address,
       items: [items]
     }
-    const product = new Invoice(invoiceProps)
+    const invoice = new Invoice(invoiceProps)
 
     const repository = new InvoiceRepository()
-
-    await repository.generate(product)
+    await repository.generate(invoice)
 
     const { dataValues: result } = await InvoiceModel.findOne({
-      where: { id: '1' }
+      where: { id: '1' },
+      include: {
+        model: InvoiceItemModel
+      }
     })
 
     expect(result.id).toEqual('1')
-    expect(result.name).toEqual('Product 1')
+    expect(result.name).toEqual('Invoice 1')
     expect(result.document).toEqual('12345678')
+    expect(result.items[0].name).toEqual('Item 1')
+    expect(result.street).toEqual('Street 1')
   })
 
   it('should find a invoice', async () => {
     const repository = new InvoiceRepository()
 
-    const id = new Id('1')
+    const id = new Id('2')
 
     const address = new Address(
       'Street 1',
@@ -79,13 +83,13 @@ describe('Invoice repository test', () => {
     )
 
     const item1 = new InvoiceItems({
-      id: new Id('1'),
+      id: id,
       name: 'Item 1',
       price: 100
     })
 
     const invoice = new Invoice({
-      id: new Id(id.id),
+      id: id,
       name: 'Invoice 1',
       document: '12345678',
       items: [item1],
@@ -94,26 +98,36 @@ describe('Invoice repository test', () => {
       updatedAt: new Date()
     })
 
-    const { dataValues: res } = await InvoiceModel.create({
-      id: invoice.id.id,
-      name: invoice.name,
-      document: invoice.document,
-      items: [invoice.items],
-      street: invoice.address.street,
-      number: invoice.address.number,
-      complement: invoice.address.complement,
-      city: invoice.address.city,
-      state: invoice.address.state,
-      zipcode: invoice.address.zipcode,
-      createdAt: invoice.createdAt,
-      updatedAt: invoice.updatedAt
-    })
+    await InvoiceModel.create(
+      {
+        id: invoice.id.id,
+        name: invoice.name,
+        document: invoice.document,
+        items: [invoice.items],
+        street: invoice.address.street,
+        number: invoice.address.number,
+        complement: invoice.address.complement,
+        city: invoice.address.city,
+        state: invoice.address.state,
+        zipcode: invoice.address.zipcode,
+        createdAt: invoice.createdAt,
+        updatedAt: invoice.updatedAt
+      },
+      {
+        include: [{ model: InvoiceItemModel }]
+      }
+    )
 
-    console.log('res', res)
+    // await InvoiceItemModel.create({
+    //   id: item1.id.id,
+    //   name: item1.name,
+    //   price: item1.price,
+    //   invoice_id: invoice.id.id
+    // })
 
-    const result = await repository.find('1')
+    const result = await repository.find('2')
 
-    expect(result.id.id).toEqual('1')
+    expect(result.id.id).toEqual('2')
     expect(result.name).toEqual('Invoice 1')
     expect(result.document).toEqual('12345678')
     expect(result.items[0].name).toEqual('Item 1')

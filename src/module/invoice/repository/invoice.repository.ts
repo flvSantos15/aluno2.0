@@ -8,31 +8,52 @@ import InvoiceModel from './invoice.model'
 
 export default class InvoiceRepository implements InvoiceGateway {
   async generate(invoice: Invoice): Promise<void> {
-    await InvoiceModel.create({
-      id: invoice.id.id,
-      name: invoice.name,
-      document: invoice.document,
-      street: invoice.address.street,
-      number: invoice.address.number,
-      complement: invoice.address.complement,
-      city: invoice.address.city,
-      state: invoice.address.state,
-      zipcode: invoice.address.zipcode,
-      items: invoice.items.map((item) => ({
-        id: item.id,
+    await InvoiceModel.create(
+      {
+        id: invoice.id.id,
+        name: invoice.name,
+        document: invoice.document,
+        street: invoice.address.street,
+        number: invoice.address.number,
+        complement: invoice.address.complement,
+        city: invoice.address.city,
+        state: invoice.address.state,
+        zipcode: invoice.address.zipcode,
+        items: invoice.items.map((item) => ({
+          id: item.id.id,
+          name: item.name,
+          price: item.price
+        })),
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        include: [{ model: InvoiceItemModel }]
+      }
+    )
+
+    // TODO: maybe is not working here
+    invoice.items.map(async (item) => {
+      await InvoiceItemModel.create({
+        id: item.id.id,
         name: item.name,
-        price: item.price
-      })),
-      createdAt: new Date(),
-      updatedAt: new Date()
+        price: item.price,
+        invoice_id: invoice.id.id
+      })
     })
   }
 
   async find(id: string): Promise<Invoice> {
-    const { dataValues: invoice } = await InvoiceModel.findOne({
+    const data = await InvoiceModel.findOne({
       where: { id },
-      include: ['items']
+      include: {
+        model: InvoiceItemModel
+      }
     })
+
+    const invoice = data?.dataValues
+
+    // const invoiceItems = await InvoiceItemModel.findAll({})
 
     if (!invoice) {
       throw new Error(`Invoice with id ${id} not found.`)
@@ -46,8 +67,6 @@ export default class InvoiceRepository implements InvoiceGateway {
       invoice.state,
       invoice.zipcode
     )
-
-    console.log('invoice', invoice)
 
     const invoiceItems = invoice.items.map(
       (item: { id: Id; name: string; price: number }) => {

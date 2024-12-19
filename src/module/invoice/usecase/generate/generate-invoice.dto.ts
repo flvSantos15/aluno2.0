@@ -1,4 +1,5 @@
 export interface GenerateInvoiceUseCaseInputDto {
+  id?: string
   name: string
   document: string
   street: string
@@ -29,5 +30,4 @@ export interface GenerateInvoiceUseCaseOutputDto {
     name: string
     price: number
   }[]
-  total: number
 }

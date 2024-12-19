@@ -7,7 +7,7 @@ import InvoiceItemModel from './invoice-items.model'
 })
 export default class InvoiceModel extends Model {
   @PrimaryKey
-  @Column({ allowNull: false })
+  @Column
   id: string
 
   @Column({ allowNull: false })

@@ -21,7 +21,6 @@ export default class Invoice extends BaseEntity implements AggregateRoot {
   private _items: InvoiceItems[]
 
   constructor(props: InvoiceProps) {
-    console.log('props', props)
     super(props.id)
     this._name = props.name
     this._document = props.document

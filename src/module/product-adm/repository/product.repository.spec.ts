@@ -39,7 +39,7 @@ describe('Product repository test', () => {
       where: { id: '1' }
     })
 
-    expect(result.id.id).toEqual('1')
+    expect(result.id).toEqual('1')
     expect(result.name).toEqual('Product 1')
     expect(result.description).toEqual('product 1 description')
     expect(result.purchasePrice).toEqual(100)
