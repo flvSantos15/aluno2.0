@@ -4,7 +4,7 @@ import FindInvoiceUseCase from '../../../module/invoice/usecase/find-invoice/fin
 
 export const invoiceRoute = express.Router()
 
-invoiceRoute.get('/', async (req: Request, res: Response) => {
+invoiceRoute.get('/invoices', async (req: Request, res: Response) => {
   const repository = new InvoiceRepository()
   const usecase = new FindInvoiceUseCase(repository)
 

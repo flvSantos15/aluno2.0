@@ -4,7 +4,7 @@ import ClientRepository from '../../../module/client-adm/repository/client.repos
 
 export const clientRoute = express.Router()
 
-clientRoute.post('/', async (req: Request, res: Response) => {
+clientRoute.post('/clients', async (req: Request, res: Response) => {
   const repository = new ClientRepository()
   const usecase = new AddClientUsecase(repository)
 
