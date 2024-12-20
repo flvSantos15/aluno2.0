@@ -4,7 +4,7 @@ import ProductRepository from '../../../module/product-adm/repository/product.re
 
 export const productRoute = express.Router()
 
-productRoute.post('/products', async (req: Request, res: Response) => {
+productRoute.post('/', async (req: Request, res: Response) => {
   const repository = new ProductRepository()
   const usecase = new AddProductUseCase(repository)
 

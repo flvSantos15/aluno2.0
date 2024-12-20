@@ -3,13 +3,12 @@ import {
   Model,
   PrimaryKey,
   Column,
-  ForeignKey,
-  BelongsTo
+  ForeignKey
 } from 'sequelize-typescript'
 import InvoiceModel from './invoice.model'
 
 @Table({
-  tableName: 'orders_items',
+  tableName: 'invoice_items',
   timestamps: false
 })
 export default class InvoiceItemModel extends Model {

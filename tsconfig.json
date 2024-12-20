@@ -100,5 +100,5 @@
   },
   "include": [
     "src/**/*.ts"
-  ]
+, "src/infrastructure/api/__test__/.setup.ts"  ]
 }

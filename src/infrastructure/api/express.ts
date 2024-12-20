@@ -6,9 +6,10 @@ import { invoiceRoute } from './routes/invoice.route'
 import { checkoutRoute } from './routes/checkout.route'
 import { productRoute } from './routes/products.route'
 
-import { ClientModel } from '../../module/client-adm/repository/client.model'
-import { ProductModel as ProductModelAdm } from '../../module/product-adm/repository/product.model'
-import ProductModel from '../../module/store-catalog/repository/product.model'
+import ClientModel from '../../module/client-adm/repository/client.model'
+// import { ProductModel as ProductModelAdm } from '../../module/product-adm/repository/product.model'
+import ProductModelAdm from '../../module/product-adm/repository/product.model'
+import StoreProductModel from '../../module/store-catalog/repository/product.model'
 import InvoiceModel from '../../module/invoice/repository/invoice.model'
 import InvoiceItemModel from '../../module/invoice/repository/invoice-items.model'
 import TransactionModel from '../../module/payment/repository/transaction.model'
@@ -33,7 +34,7 @@ async function setubDb() {
   await sequelize.addModels([
     ClientModel,
     ProductModelAdm,
-    ProductModel,
+    StoreProductModel,
     InvoiceModel,
     InvoiceItemModel,
     TransactionModel

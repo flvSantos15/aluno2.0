@@ -4,7 +4,7 @@ import PaymentRepository from '../../../module/payment/repository/transation.rep
 
 export const checkoutRoute = express.Router()
 
-checkoutRoute.post('/checkout', async (req: Request, res: Response) => {
+checkoutRoute.post('/', async (req: Request, res: Response) => {
   const repository = new PaymentRepository()
   const usecase = new PaymentUseCase(repository)
 
